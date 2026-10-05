@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blind test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Accueil -->
+  <main id="home" class="home">
+    <div class="home-disc" aria-hidden="true"><div class="grooves"></div><div class="label"></div></div>
+    <h1 class="home-title">Blind test</h1>
+    <p class="home-sub">Rap FR, films, séries, openings d’anime. Un extrait, tout le monde tape en même temps, le plus rapide marque le plus.</p>
+
+    <div class="home-form">
+      <label for="name">Ton pseudo</label>
+      <input id="name" maxlength="20" autocomplete="nickname" placeholder="ex. Théo">
+
+      <button id="create" class="btn btn-main">Créer un salon</button>
+
+      <div class="join">
+        <input id="code" maxlength="4" placeholder="Code" autocomplete="off" aria-label="Code du salon">
+        <button id="join" class="btn">Rejoindre</button>
+      </div>
+      <p id="home-error" class="error" role="alert"></p>
+    </div>
+  </main>
+
+  <!-- Salon -->
+  <div id="room" class="room" hidden>
+    <header class="topbar">
+      <button id="copy-link" class="room-code" title="Copier le lien d’invitation">
+        Salon <strong id="room-code">----</strong>
+        <span id="copy-hint">Copier le lien</span>
+      </button>
+      <div class="topbar-right">
+        <label class="volume">
+          <span>Volume</span>
+          <input id="volume" type="range" min="0" max="1" step="0.05" value="0.7">
+        </label>
+        <button id="streamer" class="btn btn-ghost btn-small" type="button" aria-pressed="false"
+                title="Masque le code du salon et ta saisie, pour streamer sans te faire copier">Mode streamer</button>
+        <button id="leave" class="btn btn-ghost">Quitter</button>
+      </div>
+    </header>
+
+    <section class="stage">
+      <div class="deck">
+        <div id="disc" class="disc">
+          <div class="grooves"></div>
+          <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="ring-track" cx="50" cy="50" r="48"></circle>
+            <circle id="ring" class="ring-bar" cx="50" cy="50" r="48"></circle>
+          </svg>
+          <div class="label">
+            <img id="cover" alt="" hidden>
+            <span id="clock" class="clock"></span>
+          </div>
+        </div>
+        <span id="theme-tag" class="theme-tag" hidden></span>
+        <p id="status" class="status" aria-live="polite">En attente de l’hôte…</p>
+        <p id="level" class="level" hidden></p>
+        <div id="answer" class="answer" hidden>
+          <p id="answer-title" class="answer-title"></p>
+          <p id="answer-artist" class="answer-artist"></p>
+          <p id="answer-accepted" class="answer-accepted" hidden></p>
+          <a id="answer-link" target="_blank" rel="noopener">Écouter sur Deezer</a>
+        </div>
+      </div>
+
+      <div class="play">
+        <div id="chips" class="found"></div>
+        <div class="guess-wrap">
+          <input id="guess" class="guess" placeholder="Tape l’artiste, le titre, ou les deux" autocomplete="off"
+                 role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions" disabled>
+          <ul id="suggestions" class="suggestions" role="listbox" hidden></ul>
+        </div>
+        <button id="unmute" class="btn btn-main" hidden>Activer le son</button>
+        <button id="vote-skip" class="btn btn-ghost btn-small vote-skip" type="button" aria-pressed="false" hidden>Passer</button>
+        <ul id="feed" class="feed" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <aside class="side">
+      <h2>Joueurs</h2>
+      <ol id="scores" class="scores"></ol>
+
+      <div id="settings" class="settings">
+        <h2>Réglages</h2>
+        <div class="themes-head">
+          <span class="label-like">Thèmes</span>
+          <button id="all-themes" class="link-btn" type="button">Tout cocher</button>
+        </div>
+        <div id="themes" class="themes" role="group" aria-label="Thèmes de la partie"></div>
+        <p class="theme-group">Communauté</p>
+        <div id="community-chips" class="theme-list"></div>
+        <button id="open-community" class="link-btn" type="button">Parcourir et créer des thèmes de la communauté</button>
+        <label for="custom">Playlist Deezer perso (facultatif)</label>
+        <input id="custom" placeholder="Lien deezer.com/…/playlist/…">
+        <label for="period">Période (films, séries, jeux, anime)</label>
+        <select id="period"></select>
+        <label for="suggestions">Propositions sous le champ de réponse</label>
+        <select id="suggestions">
+          <option value="on">Activées (noms d’artistes et d’œuvres)</option>
+          <option value="off">Désactivées (mode difficile)</option>
+        </select>
+        <label for="difficulty">Difficulté</label>
+        <select id="difficulty">
+          <option value="adaptive">Adaptative (s'ajuste au niveau du salon)</option>
+          <option value="normal">Normale</option>
+        </select>
+        <div class="row">
+          <div>
+            <label for="goal">Points pour gagner</label>
+            <select id="goal"></select>
+          </div>
+          <div>
+            <label for="duration">Secondes par extrait</label>
+            <select id="duration"></select>
+          </div>
+        </div>
+        <label for="twitch">Chaîne Twitch (facultatif : le chat joue aussi)</label>
+        <input id="twitch" placeholder="ex. twitch.tv/ma_chaine" autocomplete="off">
+        <p id="twitch-status" class="muted small" hidden></p>
+        <p id="settings-error" class="error" role="alert"></p>
+        <button id="start" class="btn btn-main">Lancer la partie</button>
+        <p id="wait-host" class="muted">L’hôte choisit les thèmes et lance la partie.</p>
+      </div>
+      <div id="twitch-panel" hidden>
+        <h2>Chat Twitch</h2>
+        <ol id="twitch-board" class="scores"></ol>
+      </div>
+
+      <section id="salle-panel" class="salle-panel">
+        <h2 id="salle-title">Salle permanente</h2>
+        <div id="salle-create" hidden>
+          <p class="muted small">Donne une adresse fixe à ce salon : réglages, historique et classement seront gardés.</p>
+          <div class="join">
+            <input id="salle-slug" placeholder="ex. 3bci" maxlength="30" autocomplete="off">
+            <button id="salle-save" class="btn" type="button">Créer</button>
+          </div>
+          <p id="salle-error" class="error" role="alert"></p>
+        </div>
+        <div id="salle-info" hidden>
+          <button id="salle-link" class="link-btn" type="button"></button>
+          <h3>Classement de la salle</h3>
+          <ol id="salle-board" class="mini-list"></ol>
+          <h3>Dernières parties</h3>
+          <ul id="salle-history" class="mini-list"></ul>
+        </div>
+      </section>
+
+      <div id="host-controls" class="host-controls" hidden>
+        <button id="pause" class="btn btn-ghost" type="button">Pause</button>
+        <button id="skip" class="btn btn-ghost" type="button">Passer</button>
+      </div>
+      <button id="stop" class="btn btn-ghost" hidden>Arrêter la partie</button>
+    </aside>
+
+    <div id="podium" class="podium" hidden>
+      <div class="podium-box">
+        <h2 id="podium-title">Fin de partie</h2>
+        <p id="podium-reason" class="muted"></p>
+        <ol id="podium-list"></ol>
+        <div id="podium-twitch" hidden>
+          <h3>Meilleurs du chat Twitch</h3>
+          <ol id="podium-twitch-list"></ol>
+        </div>
+        <div id="recap" class="recap" hidden>
+          <h3>Ton bilan</h3>
+          <dl id="recap-list"></dl>
+        </div>
+        <button id="podium-close" class="btn btn-main">Retour au salon</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="community" class="podium" hidden>
+    <div class="podium-box community-box" role="dialog" aria-modal="true" aria-labelledby="community-title">
+      <div class="community-head">
+        <h2 id="community-title">Thèmes de la communauté</h2>
+        <button id="community-close" class="btn btn-ghost btn-small" type="button">Fermer</button>
+      </div>
+      <input id="community-search" placeholder="Chercher un thème…" autocomplete="off">
+      <ul id="community-list" class="community-list"></ul>
+
+      <details id="community-form">
+        <summary>Créer un thème</summary>
+        <label for="cf-name">Nom</label>
+        <input id="cf-name" maxlength="40" placeholder="ex. Génériques du Club Dorothée">
+        <label for="cf-desc">Description (facultatif)</label>
+        <input id="cf-desc" maxlength="140">
+        <label for="cf-kind">Type</label>
+        <select id="cf-kind">
+          <option value="works">Liste d’œuvres (à trouver : le nom de l’œuvre)</option>
+          <option value="playlist">Playlist Deezer (à trouver : artiste et titre)</option>
+        </select>
+        <div id="cf-works">
+          <label for="cf-label">Ce qu’il faut trouver</label>
+          <select id="cf-label">
+            <option>Œuvre</option><option>Film</option><option>Série</option><option>Jeu</option><option>Anime</option>
+          </select>
+          <label for="cf-entries">Une œuvre par ligne : <em>Nom | autres noms acceptés | recherche Deezer</em></label>
+          <textarea id="cf-entries" rows="7" placeholder="Les Chevaliers du Zodiaque | Saint Seiya | Pegasus Fantasy&#10;Olive et Tom | Captain Tsubasa&#10;Dragon Ball Z | DBZ | Cha-La Head-Cha-La"></textarea>
+        </div>
+        <div id="cf-playlist" hidden>
+          <label for="cf-playlist-link">Lien de la playlist Deezer</label>
+          <input id="cf-playlist-link" placeholder="https://www.deezer.com/fr/playlist/…">
+        </div>
+        <p id="cf-error" class="error" role="alert"></p>
+        <button id="cf-submit" class="btn btn-main" type="button">Publier le thème</button>
+      </details>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/client.js"></script>
+</body>
+</html>

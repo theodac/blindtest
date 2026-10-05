@@ -1,0 +1,19 @@
+{
+  "name": "blindtest-party",
+  "version": "2.4.0",
+  "description": "Blind test multijoueur en temps réel, façon PopSauce (Node + Socket.io + extraits Deezer)",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test/matching.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}
